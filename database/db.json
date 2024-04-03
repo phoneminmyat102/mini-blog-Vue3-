@@ -1,0 +1,39 @@
+{
+  "posts": [
+    {
+      "id": "60f8",
+      "title": "Post One",
+      "body": "Post One Detail",
+      "tags": [
+        "html",
+        "css",
+        "js"
+      ]
+    },
+    {
+      "id": "e1e2",
+      "title": "Post Two",
+      "body": "Post Two detail",
+      "tags": [
+        "php"
+      ]
+    },
+    {
+      "id": "f912",
+      "title": "Post 3",
+      "body": "post 3 detail",
+      "tags": [
+        "laravel",
+        "vue"
+      ]
+    },
+    {
+      "id": "73de",
+      "title": "Post 4",
+      "body": "post 4 detail",
+      "tags": [
+        "vue"
+      ]
+    }
+  ]
+}

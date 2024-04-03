@@ -1,0 +1,49 @@
+<template>
+  <div class="home">
+    <h3 v-if="errorMsg">{{ errorMsg }}</h3>
+    <div v-if="posts.length > 0" class="layout">
+      <div>
+        <PostList :posts="posts"></PostList>
+      </div>
+      <div>
+        <TagCloud :posts="posts"></TagCloud>
+      </div>
+    </div>
+    <div v-else>
+      <Spinner></Spinner>
+    </div>
+  </div>
+</template>
+
+<script>
+import TagCloud from "../components/TagCloud";
+import Spinner from "../components/Spinner";
+import { ref } from "vue";
+import PostList from "../components/PostList.vue";
+import getPosts from "../composables/getPosts";
+export default {
+  components: {
+    TagCloud,
+    Spinner,
+    PostList,
+  },
+  setup() {
+    let { posts, errorMsg, load } = getPosts();
+    load();
+    return { posts, errorMsg };
+  },
+};
+</script>
+<style>
+.home {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 20px;
+}
+</style>
