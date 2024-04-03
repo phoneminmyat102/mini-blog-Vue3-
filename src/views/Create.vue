@@ -21,6 +21,7 @@
 <script>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { db, timestamp } from "../firebase/config";
 export default {
   setup() {
     let title = ref("");
@@ -36,17 +37,13 @@ export default {
     };
 
     let addPost = async () => {
-        await fetch("http://localhost:3000/posts", {
-            method:"POST",
-            headers:{
-                "Content-Type":"application/json"
-            },
-            body:JSON.stringify({
+      let newPost = {
                 title:title.value,
                 body:body.value,
-                tags:tags.value
-            })
-        })
+                tags:tags.value,
+                created_at:timestamp()
+            };
+        await db.collection("posts").add(newPost);
         router.push("/");
     }
     return { title, body, tags, tag, handleTag, addPost };

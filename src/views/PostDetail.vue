@@ -1,8 +1,8 @@
 <template>
   <div v-if="post" class="post">
-    <h2>{{post.title}}</h2>
-    <p>{{cutBody}}</p>
-    <!-- <button class="delete" @click="deletePost">delete</button> -->
+    <h2>{{ post.title }}</h2>
+    <p>{{ post.body }}</p>
+    <button class="delete" @click="deletePost">delete</button>
   </div>
   <div v-else>
     <Spinner></Spinner>
@@ -10,24 +10,31 @@
 </template>
 
 <script>
-import Spinner from '../components/Spinner'
-import { computed } from 'vue';
-import loadSinglePost from '../composables/getPost';
-import { useRoute } from 'vue-router';
+import Spinner from "../components/Spinner";
+import { computed } from "vue";
+import loadSinglePost from "../composables/getPost";
+import { useRoute } from "vue-router";
+import { useRouter } from "vue-router";
+import { db } from "../firebase/config";
 export default {
   components: { Spinner },
-    // props:['id'],
-    
-    setup() {
-        let route = useRoute();
-        let {post,errorMsg,loading} = loadSinglePost(route.params.id);
-        loading();
-        let cutBody = computed(()=>{
-            return post.value.body.substring(0,13);
-        });
-        return {post,cutBody, errorMsg}
-    }
-}
+  props: ["id"],
+
+  setup(props) {
+    let route = useRoute();
+    let router = useRouter();
+    let { post, errorMsg, loading } = loadSinglePost(route.params.id);
+    let id = props.id;
+
+    loading();
+    let deletePost = async () => {
+      await db.collection("posts").doc(id).delete();
+      router.push('/');
+    };
+
+    return { post, errorMsg, deletePost };
+  },
+};
 </script>
 
 <style>
@@ -64,5 +71,10 @@ export default {
   padding: 8px;
   border-radius: 20px;
   font-size: 14px;
+}
+
+button.delete {
+  margin: 20px auto;
+  cursor: pointer;
 }
 </style>
